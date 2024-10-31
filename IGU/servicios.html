@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            color: #f0f0f0;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            margin-bottom: 40px;
+            text-align: center;
+            font-size: 2.5rem;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .container {
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(145deg, #1d1d1d, #292929);
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+
+        .service-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .service-item {
+            background-color: #6200ea;
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .service-item:hover {
+            background-color: #3700b3;
+        }
+
+        .button {
+            background-color: #03dac5;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .button:hover {
+            background-color: #018786;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Servicios Disponibles</h1>
+        <ul class="service-list" id="serviceList">
+            <!-- Los servicios se cargarán aquí mediante JavaScript -->
+        </ul>
+        <button class="button" onclick="location.href='crear_servicio.html'">Agregar Servicio</button>
+        <button class="button" onclick="location.href='index.html'">Volver al Inicio</button>
+    </div>
+
+    <script>
+        // Función para cargar los servicios desde la API
+        async function cargarServicios() {
+            try {
+                const response = await fetch('https://estetiturnos.onrender.com/servicio/traer');
+                if (!response.ok) throw new Error('Error en la carga de servicios');
+                const servicios = await response.json();
+                const serviceList = document.getElementById('serviceList');
+
+                // Limpiar la lista antes de cargar
+                serviceList.innerHTML = '';
+
+                // Agregar cada servicio a la lista
+                servicios.forEach(servicio => {
+                    const li = document.createElement('li');
+                    li.className = 'service-item';
+                    li.innerHTML = `
+                        ${servicio.nombre} - ${servicio.descripcion} (${servicio.tiempo_estimado} min)
+                        <button class="button" onclick="eliminarServicio(${servicio.id})">Eliminar</button>
+                    `;
+                    serviceList.appendChild(li);
+                });
+            } catch (error) {
+                console.error(error);
+                alert('No se pudieron cargar los servicios. Intenta más tarde.');
+            }
+        }
+
+        // Función para eliminar un servicio
+        async function eliminarServicio(id) {
+            const confirmacion = confirm('¿Estás seguro de que quieres eliminar este servicio?');
+            if (confirmacion) {
+                try {
+                    const response = await fetch(`https://estetiturnos.onrender.com/servicio/eliminar/${id}`, {
+                        method: 'DELETE',
+                    });
+                    if (!response.ok) throw new Error('Error al eliminar el servicio');
+                    alert('Servicio eliminado correctamente');
+                    cargarServicios(); // Recargar la lista después de eliminar
+                } catch (error) {
+                    console.error(error);
+                    alert('No se pudo eliminar el servicio. Intenta más tarde.');
+                }
+            }
+        }
+
+        // Cargar servicios al cargar la página
+        window.onload = cargarServicios;
+    </script>
+</body>
+</html>
