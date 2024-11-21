@@ -3,6 +3,7 @@ package com.rosales.EstetiTurnos.service;
 import com.rosales.EstetiTurnos.model.Servicio;
 import com.rosales.EstetiTurnos.model.Turno;
 import com.rosales.EstetiTurnos.repository.ITurnoRepository;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,13 @@ public class TurnoService implements ITurnoService {
             serviciosCompletos.add(servServi.TraerServicio(serv.getId_servicio()));
         }
         return serviciosCompletos;
+    }
+
+    @Override
+    public List<Turno> TraerPorFecha(LocalDate fecha) {
+        List<Turno> ListaTurnos=turnoRepo.findByFecha(fecha);
+        System.out.println(ListaTurnos);
+        return ListaTurnos;
     }
 }
 

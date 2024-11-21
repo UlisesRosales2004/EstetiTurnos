@@ -1,0 +1,12 @@
+com\rosales\EstetiTurnos\service\IServicioService.class
+com\rosales\EstetiTurnos\model\Servicio.class
+com\rosales\EstetiTurnos\service\ITurnoService.class
+com\rosales\EstetiTurnos\service\ServicioService.class
+com\rosales\EstetiTurnos\controller\TurnoController.class
+com\rosales\EstetiTurnos\repository\ITurnoRepository.class
+com\rosales\EstetiTurnos\service\TurnoService.class
+com\rosales\EstetiTurnos\config\WebConfig.class
+com\rosales\EstetiTurnos\EstetiTurnosApplication.class
+com\rosales\EstetiTurnos\controller\ServicioController.class
+com\rosales\EstetiTurnos\model\Turno.class
+com\rosales\EstetiTurnos\repository\IServicioRepository.class
